@@ -1,0 +1,148 @@
+/* ===== Cyberpunk Counter – “Centered + Wide Pills” layout ===== */
+/* Put these in <head>:
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&family=Orbitron:wght@800;900&display=swap" rel="stylesheet">
+*/
+
+:root{
+  --bg1:#0b0f14; --bg2:#0e1624;
+  --panel:#0b1422ee; --ink:#dff7ff; --muted:#9fb7c7;
+  --cy:#35f3ff; --yl:#ffe600; --bd:#17324b;
+  --pill:#0b1a2a; --pill-bd:#1a5a80;
+}
+
+*{ box-sizing:border-box }
+html,body{ height:100% }
+
+body{
+  margin:0; min-height:100dvh;
+  display:grid; place-items:center;
+  background:
+    radial-gradient(1200px 600px at 70% -10%, #0e213b 0%, var(--bg1) 55%),
+    linear-gradient(180deg, var(--bg1), var(--bg2));
+  color:var(--ink);
+  font:16px/1.5 Inter, system-ui, Segoe UI, Roboto, sans-serif;
+  overflow-x:hidden;
+}
+
+/* Subtle neon grid overlay */
+body::before{
+  content:""; position:fixed; inset:0; pointer-events:none; opacity:.45; mix-blend-mode:screen;
+  background:
+    repeating-linear-gradient(to right, rgba(0,240,255,.08) 0 1px, transparent 1px 36px),
+    repeating-linear-gradient(to bottom, rgba(0,240,255,.06) 0 1px, transparent 1px 36px);
+  mask: radial-gradient(1100px 520px at 80% -10%, #000 28%, transparent 68%);
+}
+
+.stage{ width:min(980px, 92vw); padding:2vmin }
+
+.card{
+  background:var(--panel);
+  border:1px solid var(--bd);
+  border-radius:18px;
+  padding:1.2rem 1.4rem 1.4rem;
+  box-shadow:0 0 1px #00eaff80 inset, 0 0 18px #00eaff26, 0 22px 40px #0008;
+  position:relative; overflow:hidden;
+
+  /* vertical stack like your screenshot */
+  display:grid;
+  grid-template-rows: auto auto auto auto;
+  row-gap: 1.1rem;
+}
+
+/* yellow underline */
+.card::after{
+  content:""; position:absolute; left:6%; right:6%; bottom:.7rem; height:2px;
+  background:linear-gradient(90deg, transparent, var(--yl), transparent);
+  filter:drop-shadow(0 0 6px var(--yl));
+}
+
+/* Title centered */
+h1{
+  margin:.2rem 0 0;
+  text-align:center;
+  font:900 1.2rem/1.2 Inter, sans-serif;
+  letter-spacing:.03em; color:var(--ink);
+}
+
+/* Big digit, centered */
+.value{
+  justify-self:center;
+  display:grid; place-items:center;
+  width:140px; height:140px;
+  border-radius:22px;
+  background: radial-gradient(95px 95px at 50% 45%, #0e283b 0%, #0a1826 62%);
+  border:1px solid #1a6a93;
+  font-family:"Orbitron", Inter, system-ui, sans-serif;
+  font-weight:900;
+  font-size:clamp(3.2rem, 7.2vw, 4.2rem);
+  line-height:1; letter-spacing:.01em; color:var(--ink);
+  text-shadow:0 0 18px var(--cy), 0 0 3px var(--cy);
+  box-shadow:0 0 0 1px #0b2736 inset, 0 0 20px #35f3ff3a, inset 0 0 14px #35f3ff22;
+  font-variant-numeric:tabular-nums;
+}
+
+/* Controls row: three equal wide pills */
+.controls{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 1rem;
+  align-items:center;
+}
+.controls button{
+  height:46px;
+  border-radius:12px;
+  background:var(--pill);
+  color:var(--ink);
+  border:1px solid var(--pill-bd);
+  font:800 1rem/1 Inter, system-ui, sans-serif;
+  letter-spacing:.02em;
+  box-shadow: inset 0 0 0 999px #00eaff08, 0 2px 0 #06121a;
+  transition: transform .05s, box-shadow .15s, border-color .15s;
+}
+.controls button:hover{ box-shadow: inset 0 0 0 999px #00eaff12, 0 0 12px #00eaff33 }
+.controls button:active{ transform: translateY(1px) }
+.controls button[disabled]{ opacity:.5; cursor:not-allowed }
+
+/* RESET in cyber-yellow but still a pill */
+#reset{
+  background:var(--yl); color:#111; border-color:#e0c800;
+  box-shadow: inset 0 0 0 999px #ffe60010, 0 2px 0 #4d4500;
+}
+
+/* Step line: label left, small input pill next to it */
+.step{
+  display:flex; align-items:center; gap:.6rem; color:var(--muted);
+  padding-left:.25rem;
+}
+.step input{
+  width:7ch; height:38px;
+  padding:.35rem .6rem; text-align:center;
+  border-radius:10px; border:1px solid #1c4c6b;
+  background:#0a1420; color:var(--ink);
+  font:800 1rem/1 Inter, system-ui, sans-serif;
+  box-shadow:inset 0 0 8px #00eaff12;
+}
+.step input:focus{ outline:2px solid var(--cy); outline-offset:2px }
+
+/* Hint (validation) */
+.hint{ margin:.3rem 0 0; color:#ffb68a; font-size:.92rem }
+
+/* Tick micro-interaction (optional; toggle .tick from JS) */
+.value.tick{ animation: tickGlow .18s ease-out }
+@keyframes tickGlow{
+  0%{ text-shadow:0 0 24px #35f3ff, 0 0 3px #35f3ff }
+  100%{ text-shadow:0 0 18px #35f3ff, 0 0 2px #35f3ff }
+}
+
+/* Focus rings */
+button:focus-visible, .step input:focus-visible{
+  outline:2px solid var(--cy); outline-offset:2px;
+}
+
+/* Mobile */
+@media (max-width:640px){
+  .stage{ width:min(96vw, 540px) }
+  .controls{ grid-template-columns:1fr; row-gap:.7rem }
+  .card::after{ left:10%; right:10% }
+}
